@@ -16,7 +16,7 @@
       overflow-x: hidden; color: white;
     }
 
-    /* Fixed Backgrounds so they don't break on scroll */
+    /* Fixed Background Layers */
     .nebulas, .cosmic-layer, .meteor-container {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       pointer-events: none;
@@ -50,19 +50,24 @@
     .meteor:nth-child(2) { top: 35%; left: 98%; animation: drop 5s linear infinite 1.5s; }
     .meteor:nth-child(3) { top: 5%; left: 60%; animation: drop 3s linear infinite 0.5s; }
 
-    /* Ultra Clear Box - Fixed padding/width for mobile */
+    /* --- Crystal Clear Glass Box Updated --- */
     .glass-box {
       z-index: 3;
-      background: rgba(255, 255, 255, 0.005);
-      backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      /* Slightly more opacity for crystal surface look */
+      background: rgba(255, 255, 255, 0.02); 
+      /* HIGH BLUR for heavy glass effect as requested */
+      backdrop-filter: blur(25px); 
+      -webkit-backdrop-filter: blur(25px);
+      /* Crisper edge for crystal look */
+      border: 1px solid rgba(255, 255, 255, 0.18); 
       border-radius: 20px;
       padding: 2.5rem 1.5rem;
       width: 100%; max-width: 900px;
       text-align: center;
-      box-shadow: 0 15px 45px rgba(255, 255, 255, 0.03), inset 0 0 25px rgba(255, 255, 255, 0.08);
+      /* Refined shadows for crystal definition */
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.1);
       animation: float 6s ease-in-out infinite;
-      margin: 2rem 0; /* Ensures it doesn't stick to screen edges */
+      margin: 2rem 0;
     }
 
     h1 {
@@ -87,15 +92,26 @@
       .explore-container { flex-direction: row; justify-content: space-between; }
     }
 
+    /* --- Crystal Galaxy Card Updated --- */
     .galaxy-card {
         width: 100%; max-width: 260px;
         aspect-ratio: 3/4;
-        background: rgba(255, 255, 255, 0.015);
-        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        /* Match the main box for consistency */
+        background: rgba(255, 255, 255, 0.03);
+        /* HIGH BLUR applied here too */
+        backdrop-filter: blur(25px); 
+        -webkit-backdrop-filter: blur(25px);
+        /* Crisp crystal border */
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 12px;
         overflow: hidden;
         display: flex; flex-direction: column; align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .galaxy-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(199, 184, 255, 0.2);
     }
 
     .card-image-stub {
@@ -162,5 +178,4 @@
     </div>
   </div>
 </body>
-                  </html>
-                  
+</html>
