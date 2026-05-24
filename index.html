@@ -13,13 +13,16 @@
       min-height: 100vh;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow-x: hidden; color: white;
+      overflow-x: hidden; 
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* Smooth scroll fix */
+      color: white;
     }
 
-    /* Fixed Background Layers */
     .nebulas, .cosmic-layer, .meteor-container {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       pointer-events: none;
+      transform: translateZ(0); /* Hardware acceleration for lag fix */
     }
 
     .nebulas {
@@ -27,9 +30,7 @@
       background-image: 
         radial-gradient(circle at 10% 80%, rgba(16, 50, 80, 0.25) 0%, transparent 60%),
         radial-gradient(circle at 80% 20%, rgba(80, 20, 20, 0.2) 0%, transparent 55%),
-        radial-gradient(circle at 50% 50%, rgba(200, 160, 40, 0.15) 0%, transparent 70%),
-        linear-gradient(210deg, transparent, rgba(50, 180, 150, 0.1), transparent),
-        linear-gradient(330deg, transparent, rgba(160, 20, 200, 0.08), transparent);
+        radial-gradient(circle at 50% 50%, rgba(200, 160, 40, 0.15) 0%, transparent 70%);
       filter: blur(5px);
       animation: nebulaPulse 25s ease infinite alternate;
     }
@@ -41,33 +42,20 @@
       animation: rotateLayer 200s linear infinite;
     }
 
-    .meteor {
-      position: absolute; width: 100px; height: 3px;
-      background: linear-gradient(to right, rgba(255,255,255,0), #ffffff, #c7b8ff);
-      opacity: 0;
-    }
-    .meteor:nth-child(1) { top: 10%; left: 85%; animation: drop 4s linear infinite; }
-    .meteor:nth-child(2) { top: 35%; left: 98%; animation: drop 5s linear infinite 1.5s; }
-    .meteor:nth-child(3) { top: 5%; left: 60%; animation: drop 3s linear infinite 0.5s; }
-
-    /* --- Crystal Clear Glass Box Updated --- */
+    /* True Crystal Glass Box */
     .glass-box {
       z-index: 3;
-      /* Slightly more opacity for crystal surface look */
-      background: rgba(255, 255, 255, 0.02); 
-      /* HIGH BLUR for heavy glass effect as requested */
-      backdrop-filter: blur(25px); 
-      -webkit-backdrop-filter: blur(25px);
-      /* Crisper edge for crystal look */
-      border: 1px solid rgba(255, 255, 255, 0.18); 
+      background: rgba(255, 255, 255, 0.01); /* High transparency */
+      backdrop-filter: blur(8px); /* Lower blur for clear view */
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25); /* Sharp crisp border */
       border-radius: 20px;
       padding: 2.5rem 1.5rem;
       width: 100%; max-width: 900px;
       text-align: center;
-      /* Refined shadows for crystal definition */
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.1);
-      animation: float 6s ease-in-out infinite;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.1);
       margin: 2rem 0;
+      transform: translateZ(0); /* Scroll glitch fix */
     }
 
     h1 {
@@ -76,54 +64,49 @@
       background: linear-gradient(45deg, #ffc2eb, #c7b8ff, #ffec8c);
       -webkit-background-clip: text; color: transparent; letter-spacing: 2px;
     }
+    
     p { 
       color: #b3b3cc; font-size: clamp(0.9rem, 4vw, 1.4rem); 
       letter-spacing: 1px; margin: 10px 0 20px; font-weight: 300;
     }
 
-    /* Stack cards vertically on mobile */
     .explore-container {
       width: 100%;
       display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
 
-    /* Change to row on wider screens */
     @media (min-width: 768px) {
       .explore-container { flex-direction: row; justify-content: space-between; }
     }
 
-    /* --- Crystal Galaxy Card Updated --- */
+    /* True Crystal Galaxy Card */
     .galaxy-card {
         width: 100%; max-width: 260px;
         aspect-ratio: 3/4;
-        /* Match the main box for consistency */
-        background: rgba(255, 255, 255, 0.03);
-        /* HIGH BLUR applied here too */
-        backdrop-filter: blur(25px); 
-        -webkit-backdrop-filter: blur(25px);
-        /* Crisp crystal border */
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.01);
+        backdrop-filter: blur(6px); 
+        -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         border-radius: 12px;
         overflow: hidden;
         display: flex; flex-direction: column; align-items: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.3s ease;
+        transform: translateZ(0);
     }
     
     .galaxy-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(199, 184, 255, 0.2);
     }
 
     .card-image-stub {
         width: 100%; height: 60%; background-color: #05020c; position: relative; overflow: hidden;
     }
+    
     .card-image-stub::after {
         content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background-image: radial-gradient(circle at 30% 30%, rgba(200, 160, 40, 0.2) 0%, transparent 60%), radial-gradient(circle at 70% 70%, rgba(16, 50, 80, 0.3) 0%, transparent 60%), linear-gradient(45deg, rgba(80, 20, 20, 0.2), rgba(160, 20, 200, 0.15));
+        background-image: radial-gradient(circle at 30% 30%, rgba(200, 160, 40, 0.2) 0%, transparent 60%), radial-gradient(circle at 70% 70%, rgba(16, 50, 80, 0.3) 0%, transparent 60%);
         filter: blur(2px);
     }
-    .card-image-stub.antennae::after { background-image: radial-gradient(circle at 30% 60%, rgba(200, 160, 40, 0.3) 0%, transparent 50%), radial-gradient(circle at 70% 30%, rgba(80, 20, 20, 0.35) 0%, transparent 50%), linear-gradient(210deg, transparent, rgba(50, 180, 150, 0.1), transparent); }
-    .card-image-stub.hoag::after { background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 200, 0.2) 0%, transparent 30%), radial-gradient(circle at 50% 50%, transparent 35%, rgba(16, 50, 80, 0.3) 45%, transparent 60%); }
 
     .card-text { padding: 15px; width: 100%; text-align: left; }
     .card-title { color: #fff; font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; }
@@ -131,19 +114,11 @@
 
     @keyframes nebulaPulse { 0% { opacity: 0.8; } 100% { opacity: 1; } }
     @keyframes rotateLayer { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    @keyframes drop { 0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; width: 0; } 20% { width: 100px; } 100% { transform: translate(-900px, 900px) rotate(-45deg); opacity: 0; } }
   </style>
 </head>
 <body>
   <div class="nebulas"></div>
   <div class="cosmic-layer"></div>
-  
-  <div class="meteor-container">
-    <div class="meteor"></div>
-    <div class="meteor"></div>
-    <div class="meteor"></div>
-  </div>
   
   <div class="glass-box">
     <div class="header-text">
@@ -153,29 +128,30 @@
 
     <div class="explore-container">
         <div class="galaxy-card">
-            <div class="card-image-stub antennae"></div>
+            <div class="card-image-stub"></div>
             <div class="card-text">
                 <div class="card-title">Antennae Galaxies</div>
-                <div class="card-desc">Witness a cosmic dance of collision and star formation.</div>
-            </div>
-        </div>
-
-        <div class="galaxy-card">
-            <div class="card-image-stub hoag"></div>
-            <div class="card-text">
-                <div class="card-title">Hoag's Object</div>
-                <div class="card-desc">An impossible ring galaxy, a cosmic curiosity.</div>
+                <div class="card-desc">Cosmic dance of collision.</div>
             </div>
         </div>
 
         <div class="galaxy-card">
             <div class="card-image-stub"></div>
             <div class="card-text">
-                <div class="card-title">Veil Nebula Remnant</div>
-                <div class="card-desc">A colourful tapestry woven from a supernova's whisper.</div>
+                <div class="card-title">Hoag's Object</div>
+                <div class="card-desc">An impossible ring galaxy.</div>
+            </div>
+        </div>
+
+        <div class="galaxy-card">
+            <div class="card-image-stub"></div>
+            <div class="card-text">
+                <div class="card-title">Veil Nebula</div>
+                <div class="card-desc">A colourful supernova tapestry.</div>
             </div>
         </div>
     </div>
   </div>
 </body>
 </html>
+
