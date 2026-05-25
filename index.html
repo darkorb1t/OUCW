@@ -18,7 +18,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Fixed Background Layers for Zero Scroll Lag */
     .bg-layer {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       pointer-events: none;
@@ -52,16 +51,10 @@
     .meteor:nth-child(2) { top: -20%; left: 70%; animation: shoot 6s linear infinite 3s; }
     .meteor:nth-child(3) { top: 10%; left: 110%; animation: shoot 5s linear infinite 0s; }
 
-    /* =========================================
-       ULTRA CLEAR REAL GLASS EFFECT
-       ========================================= */
     .glass-box {
-      /* Gradient opacity creates a glass surface reflection */
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
-      /* Low blur so background details pop clearly */
       backdrop-filter: blur(4px); 
       -webkit-backdrop-filter: blur(4px);
-      /* Real glass edge reflection (brighter on top/left) */
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-top: 1px solid rgba(255, 255, 255, 0.25);
       border-left: 1px solid rgba(255, 255, 255, 0.25);
@@ -69,7 +62,6 @@
       padding: 3rem 2rem;
       width: 100%; max-width: 900px;
       text-align: center;
-      /* Soft drop shadow + inner light reflection */
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.02);
       margin: 2rem 0;
       transform: translateZ(0);
@@ -97,7 +89,7 @@
       .explore-container { flex-direction: row; justify-content: center; flex-wrap: wrap; }
     }
 
-    /* Ultra Clear Galaxy Cards */
+    /* Cards ekhon <a> tag hobe, tai default link style remove korlam */
     .galaxy-card {
         width: 100%; max-width: 270px;
         aspect-ratio: 3/4;
@@ -112,6 +104,8 @@
         display: flex; flex-direction: column; align-items: center;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
         transform: translateZ(0);
+        text-decoration: none; /* Link er underline bad dilam */
+        cursor: pointer;
     }
     
     .galaxy-card:hover {
@@ -156,29 +150,29 @@
     <p>EXPLORE THE MYSTERIES</p>
 
     <div class="explore-container">
-        <div class="galaxy-card">
+        <a href="explore.html" class="galaxy-card">
             <div class="card-image-stub"></div>
             <div class="card-text">
                 <div class="card-title">Antennae Galaxies</div>
                 <div class="card-desc">Cosmic dance of collision and creation.</div>
             </div>
-        </div>
+        </a>
 
-        <div class="galaxy-card">
+        <a href="hoag.html" class="galaxy-card">
             <div class="card-image-stub"></div>
             <div class="card-text">
                 <div class="card-title">Hoag's Object</div>
                 <div class="card-desc">An impossible ring galaxy formation.</div>
             </div>
-        </div>
+        </a>
 
-        <div class="galaxy-card">
+        <a href="veil.html" class="galaxy-card">
             <div class="card-image-stub"></div>
             <div class="card-text">
                 <div class="card-title">Veil Nebula</div>
                 <div class="card-desc">A colourful supernova tapestry.</div>
             </div>
-        </div>
+        </a>
     </div>
   </div>
 </body>
