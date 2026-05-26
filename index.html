@@ -134,7 +134,18 @@
       0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; }
       100% { transform: translateX(-1500px) translateY(1500px) rotate(-45deg); opacity: 0; }
     }
-  </style>
+    .btn-glass {
+  display: inline-block; padding: 10px 20px; color: white; text-decoration: none;
+  font-weight: 500; letter-spacing: 1px; font-size: 0.9rem; margin: 0 10px 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px;
+  transition: all 0.3s ease; backdrop-filter: blur(4px);
+}
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+    
+  </style>  
 </head>
 <body>
   <div class="bg-layer nebula"></div>
@@ -146,6 +157,11 @@
   </div>
   
   <div class="glass-box">
+    <div>
+    <a href="store.html" class="btn-glass">🛍️ Orbit Store</a>
+    <a href="#" class="btn-glass">🎁 Giveaways</a>
+    </div>
+    
     <h1>Orbit Universe</h1>
     <p>EXPLORE THE MYSTERIES</p>
 
