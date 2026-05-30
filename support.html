@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orbit Support & Community</title>
+  <title>Support - Orbit Universe</title>
   <style>
     * { box-sizing: border-box; }
     
@@ -16,7 +16,7 @@
       overflow-x: hidden; color: white; -webkit-font-smoothing: antialiased;
     }
 
-    /* Fixed Background Layers for Zero Scroll Lag */
+    /* Background Animations */
     .bg-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; transform: translateZ(0); }
     .nebula { background: radial-gradient(circle at 20% 30%, rgba(100, 50, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(50, 150, 255, 0.1) 0%, transparent 50%); filter: blur(30px); }
     .falling-stars { background: transparent url('https://www.transparenttextures.com/patterns/stardust.png'); opacity: 0.4; animation: drift 100s linear infinite; }
@@ -31,50 +31,63 @@
       backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.25); border-left: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 24px; padding: 3rem 2rem; width: 100%; max-width: 900px;
-      text-align: center; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.02);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.02);
       margin: 2rem 0; transform: translateZ(0);
     }
 
+    /* Top Navigation */
     .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
     .btn-glass { display: inline-block; padding: 10px 20px; color: white; text-decoration: none; font-weight: 500; letter-spacing: 1px; font-size: 0.9rem; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0)); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; transition: all 0.3s ease; backdrop-filter: blur(4px); }
     .btn-glass:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-    h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin: 0; background: linear-gradient(to right, #ffffff, #c7b8ff, #ffec8c); -webkit-background-clip: text; color: transparent; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.1); }
-    p { color: #e0e0eb; font-size: clamp(1rem, 4vw, 1.3rem); letter-spacing: 2px; margin: 10px 0 30px; font-weight: 300; }
+    /* Typography */
+    .header-text { text-align: center; margin-bottom: 3rem; }
+    h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; background: linear-gradient(to right, #ffffff, #c7b8ff, #ffec8c); -webkit-background-clip: text; color: transparent; letter-spacing: 1px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.1); }
+    .subtitle { color: #c7b8ff; font-size: 0.8rem; letter-spacing: 4px; margin-top: 10px; font-weight: 600; text-transform: uppercase; opacity: 0.8; }
 
-    /* Community Links Grid */
-    .social-grid { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 30px; }
-    @media (min-width: 768px) { .social-grid { flex-direction: row; justify-content: center; } }
+    /* Contact Buttons (Hover Logic from your previous code) */
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 3rem; }
+    @media (min-width: 768px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
 
-    .social-card {
-      width: 100%; max-width: 280px; text-decoration: none;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
-      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.25); border-left: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 16px; padding: 25px; display: flex; flex-direction: column; align-items: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    .contact-card {
+      display: flex; align-items: center; gap: 20px; padding: 25px; text-decoration: none;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+      backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.1); 
+      border-radius: 20px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .contact-card:hover {
+      background: rgba(110, 59, 255, 0.1); 
+      transform: translateY(-8px); 
+      border-color: rgba(110, 59, 255, 0.5);
+      box-shadow: 0 15px 40px rgba(110, 59, 255, 0.2); 
     }
 
-    .social-card:hover {
-      transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      border-top: 1px solid rgba(255, 255, 255, 0.4); border-left: 1px solid rgba(255, 255, 255, 0.4);
-    }
+    .contact-icon { font-size: 3rem; }
+    .contact-info h3 { color: #fff; font-size: 1.5rem; margin: 0 0 5px 0; font-weight: 600; }
+    .contact-info p { color: #b3b3cc; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin: 0; font-weight: 600; }
 
-    .social-icon { font-size: 3.5rem; margin-bottom: 15px; }
-    .social-title { color: #fff; font-size: 1.3rem; font-weight: 600; margin-bottom: 5px; letter-spacing: 1px; }
-    .social-desc { color: #b3b3cc; font-size: 0.9rem; font-weight: 300; line-height: 1.4; text-align: center; }
+    /* FAQ Section */
+    .faq-section { background: rgba(0, 0, 0, 0.2); border-radius: 20px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.05); }
+    .faq-title { font-size: 1.8rem; color: #c7b8ff; margin: 0 0 25px 0; font-weight: 600; text-align: center; }
+    
+    .faq-item { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 20px; margin-bottom: 20px; }
+    .faq-item:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+    .faq-q { color: #fff; font-size: 1.1rem; font-weight: 600; margin: 0 0 10px 0; }
+    .faq-a { color: #b3b3cc; font-size: 0.95rem; line-height: 1.6; margin: 0; }
 
-    /* Specific Card Accents */
-    .tg-card:hover { box-shadow: 0 10px 25px rgba(0, 136, 204, 0.3); }
-    .wa-card:hover { box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); }
+    .footer { text-align: center; margin-top: 3rem; font-size: 0.75rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 3px; font-weight: 600; }
 
     @keyframes drift { from { background-position: 0 0; } to { background-position: -1000px 1000px; } }
     @keyframes shoot { 0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; } 100% { transform: translateX(-1500px) translateY(1500px) rotate(-45deg); opacity: 0; } }
   </style>
 </head>
 <body>
-  <div class="bg-layer nebula"></div><div class="bg-layer falling-stars"></div>
-  <div class="bg-layer"><div class="meteor"></div><div class="meteor"></div><div class="meteor"></div></div>
+  <div class="bg-layer nebula"></div>
+  <div class="bg-layer falling-stars"></div>
+  <div class="bg-layer">
+    <div class="meteor"></div><div class="meteor"></div><div class="meteor"></div>
+  </div>
   
   <div class="glass-box">
     <div class="header-nav">
@@ -82,23 +95,51 @@
         <a href="store.html" class="btn-glass">Store 🛍️</a>
     </div>
 
-    <h1>Join The Universe</h1>
-    <p>CONNECT WITH OUR COMMUNITY & SUPPORT</p>
+    <div class="header-text">
+        <h1>Universe Help</h1>
+        <div class="subtitle">Always active for your needs</div>
+    </div>
 
-    <div class="social-grid">
-                <a href="https://t.me/darkobr1t" target="_blank" class="social-card tg-card">
-            <div class="social-icon">✈️</div>
-            <div class="social-title">Telegram Hub</div>
-            <div class="social-desc">Join for live giveaways, daily updates, and exclusive drops.</div>
+    <div class="contact-grid">
+        <a href="https://wa.me/8801611026722" target="_blank" class="contact-card">
+            <div class="contact-icon">📱</div>
+            <div class="contact-info">
+                <h3>WhatsApp</h3>
+                <p>Instant Support</p>
+            </div>
         </a>
+        
+        <a href="https://t.me/darkobr1t" target="_blank" class="contact-card">
+            <div class="contact-icon">✈️</div>
+            <div class="contact-info">
+                <h3>Telegram</h3>
+                <p>Official Support</p>
+            </div>
+        </a>
+    </div>
 
-        <a href="https://wa.me/8801611026722" target="_blank" class="social-card wa-card">
-            <div class="social-icon">💬</div>
-            <div class="social-title">WhatsApp Support</div>
-            <div class="social-desc">Need help with an order? Contact our live support team instantly.</div>
-        </a>
+    <div class="faq-section">
+        <h2 class="faq-title">Common Questions</h2>
+        
+        <div class="faq-item">
+            <h4 class="faq-q">How do I verify my payment?</h4>
+            <p class="faq-a">Simply submit your bKash TrxID and contact info directly on the product page or send it to our WhatsApp support.</p>
+        </div>
+
+        <div class="faq-item">
+            <h4 class="faq-q">What's the delivery time?</h4>
+            <p class="faq-a">We usually process and deliver within 5-30 minutes of payment verification.</p>
+        </div>
+
+        <div class="faq-item">
+            <h4 class="faq-q">My ID isn't working, what to do?</h4>
+            <p class="faq-a">Directly message us on WhatsApp or Telegram with your TrxID for an instant check and replacement.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Orbit Universe © 2026
     </div>
   </div>
 </body>
-  </html>
-  
+</html>
