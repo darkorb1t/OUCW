@@ -65,6 +65,9 @@
     .payment-instruction h2 { margin: 5px 0; color: #e2156f; letter-spacing: 2px; }
     .payment-instruction .amount-text { color: #ffc2eb; font-weight: bold; font-size: 1.1rem; margin-top: 5px; }
 
+    /* Error Message */
+    .error-msg { color: #ff4d4d; font-size: 0.85rem; margin-top: 5px; display: none; }
+
     .btn-submit {
       display: inline-block; width: 100%; padding: 15px; margin-top: 10px; cursor: pointer;
       background: linear-gradient(90deg, #8a2be2, #4b0082); color: white; font-size: 1.1rem;
@@ -95,12 +98,12 @@
         
         <div class="form-group">
             <label>1. Select Purchased Item</label>
-            <input type="text" id="itemInput" class="glass-input" list="productList" placeholder="Search and select product..." autocomplete="off" required>
-            <datalist id="productList">
-                <option value="Bybit Dual Currency VISA Card - ৳599">
-                <option value="Redotpay Dual Currency VISA Card - ৳480">
-                <option value="Google Super Pack - ৳99">
-            </datalist>
+            <select id="itemInput" class="glass-input" required>
+                <option value="" disabled selected>Select an item...</option>
+                <option value="Bybit Dual Currency VISA Card - ৳599">Bybit Dual Currency VISA Card - ৳599</option>
+                <option value="Redotpay Dual Currency VISA Card - ৳480">Redotpay Dual Currency VISA Card - ৳480</option>
+                <option value="Google Super Pack - ৳99">Google Super Pack - ৳99</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -122,12 +125,18 @@
 
         <div class="form-group">
             <label>3. Transaction ID (TrxID)</label>
-            <input type="text" id="trxInput" class="glass-input" placeholder="e.g. 9K2A5B8C..." required>
+            <input type="text" id="trxInput" class="glass-input" placeholder="e.g. 9K2A5B8C..." maxlength="10" required>
+            <div id="trxError" class="error-msg">TrxID must be exactly 10 characters (letters and numbers only).</div>
         </div>
 
         <div class="form-group">
             <label>4. Your WhatsApp Number</label>
             <input type="tel" id="waInput" class="glass-input" placeholder="e.g. 01XXXXXXXXX" required>
+        </div>
+
+        <div class="form-group">
+            <label>5. Human Verification: What is <span id="captchaQuestion"></span>?</label>
+            <input type="number" id="captchaInput" class="glass-input" placeholder="Enter answer..." required>
         </div>
 
         <button type="submit" class="btn-submit">VERIFY NOW</button>
@@ -139,13 +148,19 @@
     const methodInput = document.getElementById('methodInput');
     const paymentBox = document.getElementById('paymentBox');
     const amountDisplay = document.getElementById('amountDisplay');
+    const trxInput = document.getElementById('trxInput');
+    const trxError = document.getElementById('trxError');
+
+    // Captcha Logic setup
+    let num1 = Math.floor(Math.random() * 10) + 1;
+    let num2 = Math.floor(Math.random() * 10) + 1;
+    let captchaAns = num1 + num2;
+    document.getElementById('captchaQuestion').innerText = `${num1} + ${num2}`;
 
     // Function to dynamically show payment info
     function updatePaymentInfo() {
         const itemVal = itemInput.value;
         const methodVal = methodInput.value;
-        
-        // Extract price using Regex (Looks for ৳ followed by numbers)
         const priceMatch = itemVal.match(/৳(\d+)/);
         
         if (methodVal === 'bkash' && priceMatch) {
@@ -156,27 +171,55 @@
         }
     }
 
-    itemInput.addEventListener('input', updatePaymentInfo);
+    itemInput.addEventListener('change', updatePaymentInfo);
     methodInput.addEventListener('change', updatePaymentInfo);
 
-    // Handle Form Submit to WhatsApp
+    // Form Submit handling (Validation + Telegram API + WhatsApp redirect)
     document.getElementById('verifyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Stop default form submission
         
+        // 1. Verify Captcha
+        const userAnswer = parseInt(document.getElementById('captchaInput').value);
+        if(userAnswer !== captchaAns) {
+            alert("Incorrect Math Answer! Are you a robot?");
+            return;
+        }
+
+        // 2. Verify TrxID (exactly 10 chars, letters & numbers)
+        const trx = trxInput.value.trim();
+        const trxRegex = /^[A-Za-z0-9]{10}$/;
+        if(!trxRegex.test(trx)) {
+            trxError.style.display = 'block';
+            return;
+        } else {
+            trxError.style.display = 'none';
+        }
+
+        // Get details
         const item = itemInput.value;
         const method = methodInput.value;
-        const trx = document.getElementById('trxInput').value;
         const userWa = document.getElementById('waInput').value;
-
         const priceMatch = item.match(/৳(\d+)/);
         const price = priceMatch ? priceMatch[1] : 'N/A';
 
-        // Format message for WhatsApp
-        const waMessage = `*New Payment Verification* 🚀\n\n*Purchased Item:* ${item}\n*Amount Sent:* ৳${price}\n*Method:* ${method.toUpperCase()}\n*TrxID:* ${trx}\n*Customer WA:* ${userWa}`;
+        const orderDetails = `*New Payment Verification* 🚀\n\n*Item:* ${item}\n*Amount:* ৳${price}\n*Method:* ${method.toUpperCase()}\n*TrxID:* ${trx}\n*Customer WA:* ${userWa}`;
+
+        // 3. Send to Telegram via Bot API (Invisible to user)
+        // REPLACE 'YOUR_BOT_TOKEN' AND 'YOUR_CHAT_ID' WITH ACTUAL VALUES
+        const botToken = 'YOUR_BOT_TOKEN'; 
+        const chatId = 'YOUR_CHAT_ID';
         
-        // Open WhatsApp API with your number
-        const waUrl = `https://wa.me/8801611026722?text=${encodeURIComponent(waMessage)}`;
+        if(botToken !== 'YOUR_BOT_TOKEN') {
+            const tgUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(orderDetails)}&parse_mode=Markdown`;
+            fetch(tgUrl).catch(err => console.log("Telegram Error", err));
+        }
+
+        // 4. Redirect to WhatsApp (Visible to user)
+        const waUrl = `https://wa.me/8801611026722?text=${encodeURIComponent(orderDetails)}`;
         window.open(waUrl, '_blank');
+        
+        // Optionally reset form after submission
+        // this.reset();
     });
   </script>
 </body>
