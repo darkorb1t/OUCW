@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Payment - Orbit Universe</title>
+  <style>
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0; padding: 2rem 1rem;
+      background: linear-gradient(135deg, #03010a 0%, #0b1626 40%, #100a1c 70%, #05020c 100%);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden; color: white; -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fixed Background Layers */
+    .bg-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; transform: translateZ(0); }
+    .nebula { background: radial-gradient(circle at 20% 30%, rgba(100, 50, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(50, 150, 255, 0.1) 0%, transparent 50%); filter: blur(30px); }
+    .falling-stars { background: transparent url('https://www.transparenttextures.com/patterns/stardust.png'); opacity: 0.4; animation: drift 100s linear infinite; }
+    .meteor { position: absolute; width: 150px; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); opacity: 0; transform: rotate(-45deg); will-change: transform, opacity; }
+    .meteor:nth-child(1) { top: -10%; left: 30%; animation: shoot 4s linear infinite 1s; }
+    .meteor:nth-child(2) { top: -20%; left: 70%; animation: shoot 6s linear infinite 3s; }
+    .meteor:nth-child(3) { top: 10%; left: 110%; animation: shoot 5s linear infinite 0s; }
+
+    /* Ultra Clear Main Glass Box */
+    .glass-box {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.25); border-left: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px; padding: 3rem 2rem; width: 100%; max-width: 600px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.02);
+      margin: 2rem 0; transform: translateZ(0); text-align: center;
+    }
+
+    .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .btn-glass { display: inline-block; padding: 10px 20px; color: white; text-decoration: none; font-weight: 500; letter-spacing: 1px; font-size: 0.9rem; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0)); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+    .btn-glass:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+    h1 { font-size: clamp(2rem, 6vw, 3rem); margin: 0; background: linear-gradient(to right, #ffffff, #c7b8ff, #ffec8c); -webkit-background-clip: text; color: transparent; letter-spacing: 1px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.1); }
+    p { color: #b3b3cc; font-size: 1rem; letter-spacing: 1px; margin: 10px 0 30px; font-weight: 300; }
+
+    /* Glass Form Elements */
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; color: #fff; margin-bottom: 8px; font-weight: 500; letter-spacing: 1px; font-size: 0.9rem; }
+    
+    .glass-input {
+      width: 100%; padding: 15px; border-radius: 12px; color: white; font-size: 1rem;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px); transition: all 0.3s ease; outline: none; font-family: inherit;
+    }
+    .glass-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+    .glass-input:focus { border-color: #c7b8ff; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 15px rgba(199, 184, 255, 0.2); }
+    
+    select.glass-input option { background: #0b1626; color: white; }
+
+    .btn-submit {
+      display: inline-block; width: 100%; padding: 15px; margin-top: 10px; cursor: pointer;
+      background: linear-gradient(90deg, #8a2be2, #4b0082); color: white; font-size: 1.1rem;
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; font-weight: 600; letter-spacing: 2px;
+      transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3); font-family: inherit;
+    }
+    .btn-submit:hover { background: linear-gradient(90deg, #9932cc, #4b0082); box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6); transform: translateY(-2px); }
+
+    @keyframes drift { from { background-position: 0 0; } to { background-position: -1000px 1000px; } }
+    @keyframes shoot { 0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; } 100% { transform: translateX(-1500px) translateY(1500px) rotate(-45deg); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="bg-layer nebula"></div><div class="bg-layer falling-stars"></div>
+  <div class="bg-layer"><div class="meteor"></div><div class="meteor"></div><div class="meteor"></div></div>
+  
+  <div class="glass-box">
+    <div class="header-nav">
+        <a href="store.html" class="btn-glass">← Store</a>
+        <a href="support.html" class="btn-glass">Support 🎧</a>
+    </div>
+
+    <h1>Verify Payment</h1>
+    <p>SUBMIT YOUR TRXID TO RECEIVE YOUR ORDER</p>
+
+    <form onsubmit="event.preventDefault(); alert('Verification Submitted! We will contact you shortly.');">
+        <div class="form-group">
+            <label>Payment Method</label>
+            <select class="glass-input" required>
+                <option value="" disabled selected>Select method used...</option>
+                <option value="bkash">bKash</option>
+                <option value="nagad">Nagad</option>
+                <option value="rocket">Rocket</option>
+                <option value="binance">Binance Pay</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Transaction ID (TrxID)</label>
+            <input type="text" class="glass-input" placeholder="e.g. 9K2A5B8C..." required>
+        </div>
+
+        <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" class="glass-input" placeholder="e.g. 01XXXXXXXXX" required>
+        </div>
+
+        <div class="form-group">
+            <label>Purchased Item (Optional)</label>
+            <input type="text" class="glass-input" placeholder="What did you buy?">
+        </div>
+
+        <button type="submit" class="btn-submit">VERIFY NOW</button>
+    </form>
+  </div>
+</body>
+          </html>
+          
